@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "61747800614",
+    "project_id": "final-p1-f591a",
+    "storage_bucket": "final-p1-f591a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61747800614:android:19d21141c36179c99814e7",
+        "android_client_info": {
+          "package_name": "com.simcoder.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcJ8UGiJxmgvAnvuL0V43cJyioxnnOnZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61747800614:android:8589f6812719093c9814e7",
+        "android_client_info": {
+          "package_name": "com.simcoder.tuktukgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcJ8UGiJxmgvAnvuL0V43cJyioxnnOnZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
