@@ -15,6 +15,7 @@ public class MyApplication extends Application {
 
 
 //        val intent = Intent(this, LauncherActivity::class.java)
+//
 //        startActivity(intent)
 
     }
