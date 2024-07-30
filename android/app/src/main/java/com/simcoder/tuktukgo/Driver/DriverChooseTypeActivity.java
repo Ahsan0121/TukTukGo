@@ -1,15 +1,16 @@
 package com.simcoder.tuktukgo.Driver;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.simcoder.tuktukgo.Adapters.TypeAdapter;
 import com.simcoder.tuktukgo.Objects.TypeObject;
@@ -17,11 +18,12 @@ import com.simcoder.tuktukgo.R;
 import com.simcoder.tuktukgo.Utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Activity responsible for letting the driver chose the service type
  * they offer.
- *
+ * <p>
  * It displays a recyclerView with the possible service type options
  */
 public class DriverChooseTypeActivity extends AppCompatActivity {
@@ -45,15 +47,16 @@ public class DriverChooseTypeActivity extends AppCompatActivity {
         initRecyclerView();
 
 
-
         String service = getIntent().getStringExtra("service");
-        for(TypeObject mType : typeArrayList){
-            if(mType.getId().equals(service)){
+        for (TypeObject mType : typeArrayList) {
+            if (mType.getId().equals(service)) {
                 mAdapter.setSelectedItem(mType);
             }
         }
 
-        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemChanged(
+                mAdapter.getItemCount()
+        );
     }
 
     /**
@@ -63,8 +66,8 @@ public class DriverChooseTypeActivity extends AppCompatActivity {
     private void setupToolbar() {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setTitle(getString(R.string.type));
-        myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.type));
+        myToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
@@ -74,7 +77,7 @@ public class DriverChooseTypeActivity extends AppCompatActivity {
     private void confirmEntry() {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("result", mAdapter.getSelectedItem().getId());
-        setResult(Activity.RESULT_OK,returnIntent);
+        setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
 

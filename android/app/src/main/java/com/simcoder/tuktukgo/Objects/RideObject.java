@@ -31,20 +31,20 @@ import java.util.Locale;
 
 /**
  * Object of a ride
- *
+ * <p>
  * It is responsible for containing all the info of the ride-
  * It also posts the ride request, records it,...
  */
-public class RideObject  implements Cloneable{
+public class RideObject implements Cloneable {
 
     private String id;
     private float rideDistance = 0;
 
     private LocationObject pickup,
-                    current,
-                    destination;
+            current,
+            destination;
 
-    private String  requestService = "type_1", car = "--", cancelledReason;
+    private String requestService = "type_1", car = "--", cancelledReason;
 
 
     DatabaseReference rideRef;
@@ -64,26 +64,32 @@ public class RideObject  implements Cloneable{
 
     /**
      * RideObject constructor
+     *
      * @param activity - parent activity
-     * @param id - id of the ride
+     * @param id       - id of the ride
      */
-    public RideObject(Activity activity, String id){
+    public RideObject(Activity activity, String id) {
         this.id = id;
         this.activity = activity;
     }
 
     /**
      * RideObject constructor
-     *
+     * <p>
      * creates an empty object
      */
-    public RideObject(){}
+    public RideObject() {
+    }
 
     /**
      * Checks if user is able to place a ride request
+     *
      * @return -1 if not able and 0 otherwise
      */
-    public int checkRide(){
+    public int checkRide() {
+        if (activity == null) {
+            return -1;
+        }
         if (current == null) {
             Toast.makeText(activity.getApplicationContext(), "Can't get location", Toast.LENGTH_SHORT).show();
             return -1;
@@ -96,97 +102,97 @@ public class RideObject  implements Cloneable{
             Toast.makeText(activity.getApplicationContext(), "Please pick a pickup point", Toast.LENGTH_SHORT).show();
             return -1;
         }
-
         return 0;
     }
 
 
     /**
      * Parse the Datasnapshot retrieved from the database and puts it into a RideObject
+     *
      * @param dataSnapshot - datasnapshot of the ride
      */
-    public void parseData(DataSnapshot dataSnapshot){
+    public void parseData(DataSnapshot dataSnapshot) {
         id = dataSnapshot.getKey();
 
         pickup = new LocationObject();
         destination = new LocationObject();
 
-        if(dataSnapshot.child("pickup").child("name").getValue()!=null){
+        if (dataSnapshot.child("pickup").child("name").getValue() != null) {
             pickup.setName(dataSnapshot.child("pickup").child("name").getValue().toString());
         }
-        if(dataSnapshot.child("destination").child("name").getValue()!=null){
+        if (dataSnapshot.child("destination").child("name").getValue() != null) {
             destination.setName(dataSnapshot.child("destination").child("name").getValue().toString());
         }
-        if(dataSnapshot.child("pickup").child("lat").getValue()!=null && dataSnapshot.child("pickup").child("lng").getValue()!=null){
+        if (dataSnapshot.child("pickup").child("lat").getValue() != null && dataSnapshot.child("pickup").child("lng").getValue() != null) {
             pickup.setCoordinates(
                     new LatLng(Double.parseDouble(dataSnapshot.child("pickup").child("lat").getValue().toString()),
-                                Double.parseDouble(dataSnapshot.child("pickup").child("lng").getValue().toString())));
+                            Double.parseDouble(dataSnapshot.child("pickup").child("lng").getValue().toString())));
         }
-        if(dataSnapshot.child("destination").child("lat").getValue()!=null && dataSnapshot.child("destination").child("lng").getValue()!=null){
+        if (dataSnapshot.child("destination").child("lat").getValue() != null && dataSnapshot.child("destination").child("lng").getValue() != null) {
             destination.setCoordinates(
                     new LatLng(Double.parseDouble(dataSnapshot.child("destination").child("lat").getValue().toString()),
-                                Double.parseDouble(dataSnapshot.child("destination").child("lng").getValue().toString())));
+                            Double.parseDouble(dataSnapshot.child("destination").child("lng").getValue().toString())));
         }
 
 
-        if(dataSnapshot.child("service").getValue() != null){
+        if (dataSnapshot.child("service").getValue() != null) {
             requestService = dataSnapshot.child("service").getValue().toString();
         }
-        if(dataSnapshot.child("customerId").getValue() != null){
+        if (dataSnapshot.child("customerId").getValue() != null) {
             mCustomer = new CustomerObject(dataSnapshot.child("customerId").getValue().toString());
         }
-        if(dataSnapshot.child("driverId").getValue() != null){
+        if (dataSnapshot.child("driverId").getValue() != null) {
             mDriver = new DriverObject(dataSnapshot.child("driverId").getValue().toString());
         }
-        if(dataSnapshot.child("ended").getValue() != null){
+        if (dataSnapshot.child("ended").getValue() != null) {
             ended = Boolean.parseBoolean(dataSnapshot.child("ended").getValue().toString());
         }
-        if(dataSnapshot.child("cancelled").getValue() != null){
+        if (dataSnapshot.child("cancelled").getValue() != null) {
             cancelled = Boolean.valueOf(dataSnapshot.child("cancelled").getValue().toString());
         }
-        if(dataSnapshot.child("cancelled_info").child("type").getValue() != null){
+        if (dataSnapshot.child("cancelled_info").child("type").getValue() != null) {
             cancelled = true;
             cancelledType = Integer.parseInt(dataSnapshot.child("cancelled_info").child("type").getValue().toString());
         }
-        if(dataSnapshot.child("cancelled_info").child("reason").getValue() != null){
+        if (dataSnapshot.child("cancelled_info").child("reason").getValue() != null) {
             cancelledReason = dataSnapshot.child("cancelled_info").child("reason").getValue().toString();
         }
-        if(dataSnapshot.child("state").getValue() != null){
+        if (dataSnapshot.child("state").getValue() != null) {
             state = Integer.parseInt(dataSnapshot.child("state").getValue().toString());
         }
-        if(dataSnapshot.child("timestamp").getValue() != null){
+        if (dataSnapshot.child("timestamp").getValue() != null) {
             timestamp = Long.valueOf(dataSnapshot.child("timestamp").getValue().toString());
         }
-        if(dataSnapshot.child("price").getValue() != null){
+        if (dataSnapshot.child("price").getValue() != null) {
             ridePrice = Double.valueOf(dataSnapshot.child("price").getValue().toString());
         }
-        if(dataSnapshot.child("car").getValue() != null){
+        if (dataSnapshot.child("car").getValue() != null) {
             car = dataSnapshot.child("car").getValue().toString();
         }
-        if(dataSnapshot.child("customerPaid").getValue() != null){
+        if (dataSnapshot.child("customerPaid").getValue() != null) {
             customerPaid = true;
         }
-        if(dataSnapshot.child("driverPaidOut").getValue() != null){
+        if (dataSnapshot.child("driverPaidOut").getValue() != null) {
             driverPaid = true;
         }
-        if(dataSnapshot.child("rating").getValue() != null){
+        if (dataSnapshot.child("rating").getValue() != null) {
             rating = Integer.parseInt(dataSnapshot.child("rating").getValue().toString());
         }
 
-        if(dataSnapshot.child("calculated_duration").getValue() != null){
+        if (dataSnapshot.child("calculated_duration").getValue() != null) {
             duration = Double.parseDouble(dataSnapshot.child("calculated_duration").getValue().toString());
         }
-        if(dataSnapshot.child("calculated_distance").getValue() != null){
+        if (dataSnapshot.child("calculated_distance").getValue() != null) {
             distance = Double.parseDouble(dataSnapshot.child("calculated_distance").getValue().toString());
         }
-        if(dataSnapshot.child("calculated_Price").getValue() != null){
+        if (dataSnapshot.child("calculated_Price").getValue() != null) {
             estimatedPrice = Double.parseDouble(dataSnapshot.child("calculated_Price").getValue().toString());
         }
 
         rideRef = FirebaseDatabase.getInstance().getReference().child("ride_info").child(this.id);
 
         //Calculate the ride distance, by calculating the direct distance between pickup and destination
-        if(this.pickup.getCoordinates() != null && this.destination.getCoordinates() != null){
+        if (this.pickup.getCoordinates() != null && this.destination.getCoordinates() != null) {
             Location loc1 = new Location("");
             loc1.setLatitude(this.pickup.getCoordinates().latitude);
             loc1.setLongitude(this.pickup.getCoordinates().longitude);
@@ -203,10 +209,13 @@ public class RideObject  implements Cloneable{
      * Post Ride info to the database, this write action will be triggered by the
      * firebase functions and only then will it be available to the drivers.
      */
-    public void postRideInfo(){
+    public void postRideInfo() {
         rideRef = FirebaseDatabase.getInstance().getReference().child("ride_info");
-
-        id =  rideRef.push().getKey();
+        if (destination == null || pickup == null) {
+            return;
+        }
+        rideRef.keepSynced(true);
+        id = rideRef.push().getKey();
         String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         HashMap map = new HashMap();
         map.put("service", requestService);
@@ -234,7 +243,7 @@ public class RideObject  implements Cloneable{
     /**
      * When ride is ended this function must be called in order to finish a ride
      */
-    public void recordRide(){
+    public void recordRide() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("ride_info").child(id);
 
         HashMap map = new HashMap();
@@ -245,14 +254,14 @@ public class RideObject  implements Cloneable{
 
         ref.updateChildren(map);
 
-        new SendNotification("Make sure to rate the driver and pay for the ride","ride ended", mCustomer.getNotificationKey());
+        new SendNotification("Make sure to rate the driver and pay for the ride", "ride ended", mCustomer.getNotificationKey());
     }
 
     /**
      * When the driver has picked up the customer this function must be called in order to
      * know the state of the ride.
      */
-    public void pickedCustomer(){
+    public void pickedCustomer() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("ride_info").child(id);
 
         HashMap map = new HashMap();
@@ -265,10 +274,13 @@ public class RideObject  implements Cloneable{
 
     /**
      * Parse a timestamp in to a date of the type MM-dd-yyyy, hh:mm
+     *
      * @return parsed timestamp
      */
     public String getDate() {
-        if(timestamp == null){return "--";}
+        if (timestamp == null) {
+            return "--";
+        }
         Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.setTimeInMillis(timestamp);
         String date = DateFormat.format("MM-dd-yyyy, hh:mm", cal).toString();
@@ -278,8 +290,10 @@ public class RideObject  implements Cloneable{
     /**
      * Called when a drive is meant to be cancelled
      */
-    public void cancelRide(){
-        if(id == null){return;}
+    public void cancelRide() {
+        if (id == null) {
+            return;
+        }
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("ride_info").child(id);
 
         HashMap map = new HashMap();
@@ -292,7 +306,7 @@ public class RideObject  implements Cloneable{
     /**
      * Called when a driver wants to accept a customer request
      */
-    public void confirmDriver(){
+    public void confirmDriver() {
         HashMap map = new HashMap();
         map.put("state", 1);
         map.put("driverId", FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -315,7 +329,8 @@ public class RideObject  implements Cloneable{
 
             Button mConfirm = dialog.findViewById(R.id.confirm);
             RatingBar mRate = dialog.findViewById(R.id.rate);
-            TextView mName = dialog.findViewById(R.id.name);;
+            TextView mName = dialog.findViewById(R.id.name);
+            ;
             ImageView mImage = dialog.findViewById(R.id.image);
 
             mName.setText(mTempRide.getDriver().getNameDash());
@@ -340,6 +355,7 @@ public class RideObject  implements Cloneable{
     public DriverObject getDriver() {
         return mDriver;
     }
+
     public void setDriver(DriverObject mDriver) {
         this.mDriver = mDriver;
     }
@@ -347,6 +363,7 @@ public class RideObject  implements Cloneable{
     public CustomerObject getCustomer() {
         return mCustomer;
     }
+
     public void setCustomer(CustomerObject mCustomer) {
         this.mCustomer = mCustomer;
     }
@@ -354,6 +371,7 @@ public class RideObject  implements Cloneable{
     public LocationObject getPickup() {
         return pickup;
     }
+
     public void setPickup(LocationObject pickup) {
         this.pickup = pickup;
     }
@@ -361,6 +379,7 @@ public class RideObject  implements Cloneable{
     public LocationObject getCurrent() {
         return current;
     }
+
     public void setCurrent(LocationObject current) {
         this.current = current;
     }
@@ -368,6 +387,7 @@ public class RideObject  implements Cloneable{
     public LocationObject getDestination() {
         return destination;
     }
+
     public void setDestination(LocationObject destination) {
         this.destination = destination;
     }
@@ -375,6 +395,7 @@ public class RideObject  implements Cloneable{
     public String getRequestService() {
         return requestService;
     }
+
     public void setRequestService(String requestService) {
         this.requestService = requestService;
     }
@@ -428,7 +449,7 @@ public class RideObject  implements Cloneable{
     }
 
     @SuppressLint("DefaultLocale")
-    public String getPriceString(){
+    public String getPriceString() {
         return String.format("%.2f", ridePrice);
     }
 
@@ -442,7 +463,7 @@ public class RideObject  implements Cloneable{
 
     public String getCalculatedRideDistance() {
         String s = String.valueOf(calculatedRideDistance);
-        String s1 = s.substring(s.indexOf(".")+2).trim();
+        String s1 = s.substring(s.indexOf(".") + 2).trim();
         return s.replace(s1, "") + " km";
     }
 
@@ -450,7 +471,7 @@ public class RideObject  implements Cloneable{
         return timePassed;
     }
 
-    public int getCalculatedTime(){
+    public int getCalculatedTime() {
         return (int) calculatedRideDistance * 100 / 60;
     }
 
@@ -461,6 +482,7 @@ public class RideObject  implements Cloneable{
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
     public double getDistance() {
         return distance;
     }
@@ -477,7 +499,7 @@ public class RideObject  implements Cloneable{
         this.duration = duration;
     }
 
-    public String getDurationString(){
+    public String getDurationString() {
         int days = (int) duration / 86400;
         int hours = ((int) duration - days * 86400) / 3600;
         int minutes = ((int) duration - days * 86400 - hours * 3600) / 60;

@@ -1,15 +1,8 @@
 package com.simcoder.tuktukgo.Customer;
 
 import android.Manifest;
-import com.google.firebase.FirebaseApp;
-
-import android.app.Application;
-
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-
-
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,42 +16,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-
-import androidx.annotation.NonNull;
-
-import com.akexorcist.googledirection.DirectionCallback;
-import com.akexorcist.googledirection.GoogleDirection;
-import com.akexorcist.googledirection.constant.TransportMode;
-import com.akexorcist.googledirection.model.Direction;
-import com.akexorcist.googledirection.model.Route;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
-
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -68,8 +31,27 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.akexorcist.googledirection.DirectionCallback;
+import com.akexorcist.googledirection.GoogleDirection;
+import com.akexorcist.googledirection.constant.TransportMode;
+import com.akexorcist.googledirection.model.Direction;
+import com.akexorcist.googledirection.model.Route;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.facebook.appevents.AppEventsLogger;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -80,19 +62,26 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -101,15 +90,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.logicbeanzs.uberpolylineanimation.MapAnimator;
 import com.ncorti.slidetoact.SlideToActView;
-import com.simcoder.tuktukgo.Objects.CustomerObject;
+import com.simcoder.tuktukgo.Adapters.TypeAdapter;
 import com.simcoder.tuktukgo.History.HistoryActivity;
-import com.simcoder.tuktukgo.Objects.LocationObject;
 import com.simcoder.tuktukgo.Login.LauncherActivity;
+import com.simcoder.tuktukgo.Objects.CustomerObject;
+import com.simcoder.tuktukgo.Objects.LocationObject;
+import com.simcoder.tuktukgo.Objects.RideObject;
+import com.simcoder.tuktukgo.Objects.TypeObject;
 import com.simcoder.tuktukgo.Payment.PaymentActivity;
 import com.simcoder.tuktukgo.R;
-import com.simcoder.tuktukgo.Objects.RideObject;
-import com.simcoder.tuktukgo.Adapters.TypeAdapter;
-import com.simcoder.tuktukgo.Objects.TypeObject;
 import com.simcoder.tuktukgo.Utils.SendNotification;
 import com.simcoder.tuktukgo.Utils.Utils;
 
@@ -278,7 +267,7 @@ public class CustomerMapActivity extends AppCompatActivity
         mCurrentLocation.setOnClickListener(view -> {
 
             autocompleteFragmentFrom.setText(getString(R.string.current_location));
-            mCurrentLocation.setImageDrawable(getResources().getDrawable(R.drawable.ic_location_on_primary_24dp));
+            mCurrentLocation.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_location_on_primary_24dp));
             pickupLocation = currentLocation;
             if (pickupLocation == null) {
                 return;
@@ -311,7 +300,7 @@ public class CustomerMapActivity extends AppCompatActivity
 
 //firebaseIitialization
 
-    public class MyApplication extends Application {
+    public static class MyApplication extends Application {
         @Override
         public void onCreate() {
             super.onCreate();
@@ -319,17 +308,10 @@ public class CustomerMapActivity extends AppCompatActivity
             FirebaseApp.initializeApp(this);
 
             // Initialize Facebook SDK
-            FacebookSdk.sdkInitialize(getApplicationContext());
+            /*  FacebookSdk.sdkInitialize(getApplicationContext());*/
             AppEventsLogger.activateApp(this);
         }
     }
-
-
-
-
-
-
-
 
 
     /**
@@ -377,8 +359,8 @@ public class CustomerMapActivity extends AppCompatActivity
             mCurrentRide.setDestination(destinationLocation);
             mCurrentRide.setPickup(pickupLocation);
             mCurrentRide.setRequestService(mAdapter.getSelectedItem().getId());
-            mCurrentRide.setDistance(routeData.get(0));
-            mCurrentRide.setDuration(routeData.get(1));
+         /*   mCurrentRide.setDistance(routeData.get(0));
+            mCurrentRide.setDuration(routeData.get(1));*/
 
             if (mCurrentRide.checkRide() == -1) {
                 return;
@@ -402,9 +384,9 @@ public class CustomerMapActivity extends AppCompatActivity
     private void initRecyclerView() {
         typeArrayList = Utils.getTypeList(CustomerMapActivity.this);
 
-       RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
+        RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
-       // mRecyclerView.setHasFixedSize(true);
+        // mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(CustomerMapActivity.this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new TypeAdapter(typeArrayList, CustomerMapActivity.this, routeData);
@@ -448,7 +430,7 @@ public class CustomerMapActivity extends AppCompatActivity
                         mCurrentRide.setDestination(null);
                         autocompleteFragmentFrom.setText(getString(R.string.from));
                         autocompleteFragmentTo.setText(getString(R.string.to));
-                        mCurrentLocation.setImageDrawable(getResources().getDrawable(R.drawable.ic_location_on_grey_24dp));
+                        mCurrentLocation.setImageDrawable(ContextCompat.getDrawable(CustomerMapActivity.this, R.drawable.ic_location_on_grey_24dp));
                         mMap.clear();
                         MapAnimator();
                         erasePolylines();
@@ -676,7 +658,7 @@ public class CustomerMapActivity extends AppCompatActivity
                 if (dataSnapshot.exists() && requestBol) {
                     List<Object> map = (List<Object>) dataSnapshot.getValue();
 
-                    if(map == null){
+                    if (map == null) {
                         return;
                     }
                     double locationLat = 0;
@@ -963,9 +945,9 @@ public class CustomerMapActivity extends AppCompatActivity
         TextView durationTextView = (TextView) view.findViewById(R.id.duration);
         locationTextView.setText(location);
 
-        if(duration != null){
+        if (duration != null) {
             durationTextView.setText(duration);
-        }else{
+        } else {
             durationTextView.setVisibility(View.GONE);
         }
 
@@ -1033,7 +1015,6 @@ public class CustomerMapActivity extends AppCompatActivity
             list.add((double) totalSeconds);
 
             return list;
-
 
 
         } catch (JSONException e) {
@@ -1211,7 +1192,7 @@ public class CustomerMapActivity extends AppCompatActivity
         }
     }
 
-    private List<Polyline> polylines = new ArrayList<>();
+    private final List<Polyline> polylines = new ArrayList<>();
 
     /**
      * Remove route polylines from the map
@@ -1249,6 +1230,7 @@ public class CustomerMapActivity extends AppCompatActivity
 
 
     ArrayList<Double> routeData;
+
     /**
      * Checks if route where fetched successfully, if yes then
      * add them to the map
@@ -1256,6 +1238,7 @@ public class CustomerMapActivity extends AppCompatActivity
      * @param direction - direction object to the destination
      * @param rawBody   - data of the route
      */
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
         if (direction.isOK()) {
@@ -1371,6 +1354,7 @@ public class CustomerMapActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -1378,8 +1362,6 @@ public class CustomerMapActivity extends AppCompatActivity
             if (bottomSheetStatus == 2) {
                 bottomSheetStatus = 0;
                 bringBottomSheetDown();
-            } else {
-                super.onBackPressed();
             }
         }
 

@@ -19,6 +19,8 @@ import com.stripe.android.PaymentConfiguration;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /**
  * First activity of the app.
  * <p>
@@ -113,7 +115,7 @@ public class LauncherActivity extends AppCompatActivity {
      */
     void startApis(String type) {
         OneSignal.startInit(this).init();
-        OneSignal.sendTag("User_ID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        OneSignal.sendTag("User_ID", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         OneSignal.setEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         //OneSignal.setInFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification);
         OneSignal.idsAvailable((userId, registrationId) -> FirebaseDatabase.getInstance().getReference().child("Users").child(type).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("notificationKey").setValue(userId));

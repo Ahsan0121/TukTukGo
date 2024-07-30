@@ -2,15 +2,17 @@ package com.simcoder.tuktukgo.Utils;
 
 import android.app.Activity;
 
+import androidx.core.content.ContextCompat;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.simcoder.tuktukgo.Objects.TypeObject;
 import com.simcoder.tuktukgo.R;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class Utils {
-
-
     /**
      * Round a float value to a specific decimal place
      * @param amount - the value to round
@@ -19,7 +21,7 @@ public class Utils {
      */
     public BigDecimal round(float amount, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(amount));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        bd = bd.setScale(decimalPlace, RoundingMode.HALF_UP);
         return bd;
     }
 
@@ -34,11 +36,10 @@ public class Utils {
         ArrayList<TypeObject> typeArrayList = new ArrayList<>();
 
 
-        typeArrayList.add(new TypeObject("type_1", activity.getResources().getString(R.string.type_1), activity.getResources().getDrawable(R.drawable.ic_type_1), 4));
-        typeArrayList.add(new TypeObject("type_2", activity.getResources().getString(R.string.type_2), activity.getResources().getDrawable(R.drawable.ic_type_2), 7));
-        typeArrayList.add(new TypeObject("type_3", activity.getResources().getString(R.string.type_3), activity.getResources().getDrawable(R.drawable.ic_type_3), 4));
-        typeArrayList.add(new TypeObject("type_4", activity.getResources().getString(R.string.type_4), activity.getResources().getDrawable(R.drawable.ic_type_4), 1));
-
+        typeArrayList.add(new TypeObject("type_1", activity.getString(R.string.type_1), ContextCompat.getDrawable(activity, R.drawable.ic_type_1), 4));
+        typeArrayList.add(new TypeObject("type_2", activity.getString(R.string.type_2), ContextCompat.getDrawable(activity, R.drawable.ic_type_2), 7));
+        typeArrayList.add(new TypeObject("type_3", activity.getString(R.string.type_3), ContextCompat.getDrawable(activity, R.drawable.ic_type_3), 4));
+        typeArrayList.add(new TypeObject("type_4", activity.getString(R.string.type_4), ContextCompat.getDrawable(activity, R.drawable.ic_type_4), 1));
         return  typeArrayList;
     }
 

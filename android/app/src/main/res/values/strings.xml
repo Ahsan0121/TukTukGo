@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TukTuk Go  </string>
+    <string name="app_name">TukTuk Go</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBd1yXxj3MJs4lhNDKACEi-5DjjB1dLPGo</string>
     <string name="firebase_functions_base_url" templateMergeStrategy="preserve" translatable="false">https://firebase_functions_base_url/</string>
     <string name="publishablekey" templateMergeStrategy="preserve" translatable="false">stripe_pk_key</string>
@@ -292,6 +292,8 @@
     <string name="_120">120 €</string>
     <string name="_10_03_2010">10 / 03 / 2010</string>
     <string name="title_activity_maps">Map</string>
+    <string name="menu">menu</string>
+    <string name="person">person</string>
 
 
 </resources>
